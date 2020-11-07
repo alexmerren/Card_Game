@@ -15,11 +15,12 @@ public class Player extends Thread {
 	// Constructors
 	Player(int playerNumber) {
 		this.hand = new ArrayList<Card>();
-		this.playerNumber = playerNumber;
-		this.preferredNumber = playerNumber;
+		this.playerNumber = playerNumber+1;
+		this.preferredNumber = playerNumber+1;
 		this.pathToFile = String.format(".%1$soutput%1$splayer%2$d.txt", File.separator, playerNumber+1);
 		createOutputFile(pathToFile);
 	}
+
 
 	// Getters
 	public ArrayList<Card> getHand() { return hand; }
@@ -29,17 +30,6 @@ public class Player extends Thread {
 	public int getPreferredNumber() { return preferredNumber; }
 
 	// Setters
-	public void setCard(int handIndex, Card newCard) { hand.set(handIndex, newCard); }
-
-	public ArrayList<Card> setHand(int[] desiredHand) {
-		ArrayList<Card> hand = new ArrayList<Card>();
-		for (int value : desiredHand) {
-			Card currentCard = new Card(value);
-			hand.add(currentCard);
-		}
-		return hand;
-	}
-
 	public void updatePreferredNumber() {
 		this.preferredNumber = mostCommonValueInHand();
 	}
@@ -52,14 +42,6 @@ public class Player extends Thread {
 
 	public boolean isPreferredCard(Card card) {
 		return (card.getValue() == preferredNumber);
-	}
-
-	// TODO
-	public ArrayList<Card> takeTurn(int drawDeck, int discardDeck) {
-		writeToFile(hand.toString());
-		// Basically need to add the appropriate methods for doing this,
-		// See if I can make this work in it's current form.
-		return hand;
 	}
 
 	public int mostCommonValueInHand() {
@@ -79,33 +61,43 @@ public class Player extends Thread {
 		return preferredNumber;
 	}
 
-	public Card discardCard() {
-		// A Card with a value of 0 is returned only if the method
-		// cannot find another card to discard, meaning the player has won.
-		Card defaultCard = new Card(0);
-		Card preferredCard = (new Card(mostCommonValueInHand()));
-		// Go through all the cards in the player's hand to find
-		// any card that is not the preferred card to replace.
+	public Card drawCard(CardDeck drawDeck) {
+		Card drawnCard = drawDeck.moveTopCard();
+		hand.add(hand.size(), drawnCard);
+		return drawnCard;
+	}
+
+	public Card discardCard(CardDeck discardDeck) {
+		Card discardedCard = null;
 		for (int i = 0; i < hand.size(); i++) {
 			Card currentCard = hand.get(i);
-			if (!Objects.equals(currentCard, preferredCard)) {
-				hand.set(i, defaultCard);
+			if (currentCard.getValue() != preferredNumber) {
+				discardDeck.addCard(currentCard);
+				hand.remove(currentCard);
 				return currentCard;
 			}
 		}
-		return defaultCard;
+		return discardedCard;
 	}
 
-	public ArrayList<Card> drawCard(CardDeck cardDeck) {
-		Card currentCard = new Card(0);
-		Card newCard = cardDeck.getTopCard();
-		for (int i = 0; i < hand.size(); i++) {
-			if (currentCard.getValue() == hand.get(i).getValue()) {
-				hand.set(i, newCard);
-				return hand;
-			}
-		}
-		return hand;
+	public void takeTurn(CardDeck drawDeck, CardDeck discardDeck) {
+		// Output the current player's beginning hand.
+		System.out.printf("Player %d has the hand %s\n", playerNumber, hand);
+
+		// Get the current player to draw a card.
+		Card drawnCard = drawCard(drawDeck);
+		String drawString = String.format("Player %d has drawn a %d from deck %d", playerNumber, drawnCard.getValue(), drawDeck.getDeckNumber());
+		System.out.println(drawString);
+		writeToFile(drawString);
+
+		// Get the current player to discard a card.
+		Card discardedCard = discardCard(discardDeck);
+		String discardString = String.format("Player %d has discarded a %d to deck %d", playerNumber, discardedCard.getValue(), discardDeck.getDeckNumber());
+		System.out.println(discardString);
+		writeToFile(discardString);
+
+		// Output the current player's ending hand.
+		System.out.printf("Player %d has the hand %s\n", playerNumber, hand);
 	}
 
 	public void createOutputFile(String pathToFile) {

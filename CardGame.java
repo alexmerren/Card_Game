@@ -20,8 +20,8 @@ public class CardGame {
 			// Get the initial information needed to play the game.
 			//amountOfPlayers = Integer.parseInt(bRead.readLine());
 			//masterDeck = new MainDeck(bRead.readLine(), amountOfPlayers);
-			amountOfPlayers = 2;
-			masterDeck = new MainDeck("./data/two.txt", amountOfPlayers);
+			amountOfPlayers = 3;
+			masterDeck = new MainDeck("./data/three.txt", amountOfPlayers);
 		} catch (NumberFormatException nfe) {
 			System.out.println("You did not enter a valid number of players, please try again.");
 		}
@@ -37,9 +37,9 @@ public class CardGame {
 		// decks and players.
 		for (int i = 0; i < amountOfPlayers; i++) {
 			players.add(new Player(i));
-			//players.get(i).start();
+			players.get(i).start();
 			decks.add(new CardDeck(i));
-			//decks.get(i).start();
+			decks.get(i).start();
 		}
 
 		// Distribute the cards to the players.
@@ -57,53 +57,50 @@ public class CardGame {
 		// Write all the starting hands for the players.
 		for (int i = 0; i < players.size(); i++) {
 			Player currentPlayer = players.get(i);
-			currentPlayer.writeToFile(String.format("Player %d starting hand %s", i + 1, currentPlayer.toString()));
+			currentPlayer.writeToFile(String.format("Player %d starting hand: %s", i + 1, currentPlayer.toString()));
 			CardDeck currentDeck = decks.get(i);
-			currentDeck.writeToFile(String.format("Deck %d starts with %s", i + 1, currentDeck.toString()));
+			currentDeck.writeToFile(String.format("Deck %d starts with: %s", i + 1, currentDeck.toString()));
 		}
 
-		boolean hasWon;
-		int winningPlayer;
+		boolean hasWon = false;
+		int winningPlayer = 0;
 
-		// Update all the players' preferred numbers,
-		// and check if any of them have won.
-		for (Player currentPlayer : players) {
-			currentPlayer.updatePreferredNumber();
-			if (currentPlayer.hasWon()) {
-				winningPlayer = currentPlayer.getPlayerNumber()+1;
-				hasWon = true;
+		// Keep going through the players until someone wins.
+		while (!hasWon) {
+			for (int i = 0; i < players.size(); i++) {
+				Player currentPlayer = players.get(i);
+				currentPlayer.updatePreferredNumber();
+				CardDeck drawDeck = decks.get(i);
+				CardDeck discardDeck = decks.get((i + 1) % amountOfPlayers);
+
+				synchronized (players.get(i)) {
+					currentPlayer.takeTurn(drawDeck, discardDeck);
+				}
+
+				if (currentPlayer.hasWon()) {
+					hasWon = true;
+					winningPlayer = currentPlayer.getPlayerNumber();
+					System.out.printf("Player %d wins\n", winningPlayer);
+					break;
+				}
 			}
 		}
 
-		// Code for taking turns goes here.
+		// Notify all the players that someone has won, and
+		// write all the contents of the player's hands, and the decks to
+		// their respective files.
+		for (int i = 0; i < players.size(); i++) {
+			Player currentPlayer = players.get(i);
+			if (currentPlayer.getPlayerNumber() == winningPlayer) {
+				currentPlayer.writeToFile(String.format("Player %d wins", currentPlayer.getPlayerNumber()));
+			} else {
+				currentPlayer.writeToFile(String.format("Played %1$d has informed player %2$d that played %1$d has won", winningPlayer, currentPlayer.getPlayerNumber()));
+				currentPlayer.writeToFile(String.format("Played %d exits", currentPlayer.getPlayerNumber()));
+			}
+			currentPlayer.writeToFile(String.format("Player %d final hand: %s", i + 1, currentPlayer.getHand().toString()));
 
-
-
-
-		/* TODO actually write out this pseudo-code
-		# INPUT: 	Get the amount of players in the game "n".
-		# INPUT: 	Get the location of the deck of cards "locationOfMasterDeck".
-		# CODE: 	Write this location into the importDeck() method in CardDeck.
-		# CODE: 	Create "n" amount of decks that are used in playing the game.
-		# CODE: 	Create "n" amount of players that are used in playing the game.
-		# CODE: 	Distribute the cards to all of the players and all of the decks and players.
-		# WRITE: 	Write all of the starting hands and decks to their respective files.
-		# CODE:	Update all the preferredNumbers for all the players, using mostCommonValueInHand() method.
-		CODE: 	TakeTurn() for each of the players in the game:
-			WRITE: 	Write the beginning hand of the turn to the terminal.
-			CODE: 	Discard a card using the discardCard() method in the player class.
-			OUTPUT:	Output the Card that the player discarded and to which deck.
-			WRITE: 	Write the Card that the player discarded and to which deck.
-			CODE:  	Pick up a card using the drawCard() method in the player class.
-			OUTPUT: Output the Card that the player drew from which the deck.
-			WRITE:	Write the Card that the player drew from which deck.
-		CODE: 	Repeat TakeTurn() until a player has hasWon() is true.
-		OUTPUT:	Output to the terminal showing that a player has won the game and has notified the other players that they have won.
-		OUTPUT:	Output to the terminal that the other players have exited and their hands.
-		OUTPUT:	Output to the terminal which player has won, and that they exit the game.
-		OUTPUT: Output to the terminal the winning hand of the player.
-		WRITE:	The finishing hand of all the players to their respective files.
-		WRITE: 	The contents of the all the decks to their respective files.
-		 */
+			CardDeck currentDeck = decks.get(i);
+			currentDeck.writeToFile(String.format("Deck %d contents: %s", i + 1, currentDeck.getDeck().toString()));
+		}
 	}
 }

@@ -33,8 +33,6 @@ public class Card {
 
 	@Override
 	public String toString() {
-		String str = String.format("%d", value);
-		return str;
+		return String.format("%d", value);
 	}
-
 }

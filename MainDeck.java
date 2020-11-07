@@ -44,9 +44,11 @@ public class MainDeck {
             if (deck.size() != (8 * amountOfPlayers)) throw new IOException();
         } catch (FileNotFoundException e) {
             System.out.println("Could not find the main deck file, please try again.");
+            System.exit(1);
         } catch (IOException e) {
             System.out.printf("There are %d cards when there should be %d\n",
                                 deck.size(), (8 * amountOfPlayers));
+            System.exit(2);
         }
     }
 
