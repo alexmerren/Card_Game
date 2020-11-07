@@ -1,7 +1,9 @@
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CardDeck extends Thread {
 
@@ -15,7 +17,8 @@ public class CardDeck extends Thread {
 		// Constructor for all the subsequent decks in the game.
 		this.deckNumber = deckNumber;
 		this.deck = new ArrayList<Card>();
-		this.pathToFile = String.format("./output/player%d.txt", deckNumber);
+		this.pathToFile = String.format(".%1$soutput%1$sdeck%2$d.txt", File.separator, deckNumber+1);
+		createOutputFile(pathToFile);
 	}
 
 	// Getters
@@ -31,6 +34,24 @@ public class CardDeck extends Thread {
 	}
 
 	// Auxiliary Methods
+	public void addCard(Card card) {
+		int sizeOfHand = deck.size();
+		deck.add(sizeOfHand, card);
+	}
+
+	public void createOutputFile(String pathToFile) {
+		try {
+			File outputFile = new File(pathToFile);
+			outputFile.getParentFile().mkdirs();
+			outputFile.createNewFile();
+			BufferedWriter bWriteClearer = new BufferedWriter(new FileWriter(outputFile));
+			bWriteClearer.write("");
+			bWriteClearer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void writeToFile(String stringToWrite) {
 		try {
 			BufferedWriter bWrite = new BufferedWriter(new FileWriter(pathToFile, true));
@@ -42,10 +63,6 @@ public class CardDeck extends Thread {
 	}
 
 	public String toString() {
-		return String.format("%d, %d, %d, %d",
-					deck.get(0).getValue(),
-					deck.get(1).getValue(),
-					deck.get(2).getValue(),
-					deck.get(3).getValue());
+		return (Arrays.toString(deck.toArray()));
 	}
 }

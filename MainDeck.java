@@ -9,12 +9,15 @@ import java.util.Arrays;
 public class MainDeck {
 
     // Attributes
+    private int amountOfPlayers;
     private ArrayList<Card> deck;
     private String pathToFile;
 
     // Constructors
-    MainDeck(String locationOfDeck) throws FileNotFoundException, IOException{
-        importDeck(locationOfDeck);
+    MainDeck(String locationOfDeck, int amountOfPlayers) {
+        this.amountOfPlayers = amountOfPlayers;
+        this.pathToFile = locationOfDeck;
+        importDeck();
     }
 
     // Getters
@@ -27,19 +30,27 @@ public class MainDeck {
     }
 
     // Auxiliary Methods
-    public void importDeck(String locationOfDeck) throws FileNotFoundException, IOException{
-        this.deck = new ArrayList<Card>();
+    public void importDeck() {
+        deck = new ArrayList<Card>();
         String line;
-        File deckFile = new File(locationOfDeck);
-        BufferedReader bRead = new BufferedReader(new FileReader(deckFile));
-        while ((line = bRead.readLine()) != null) {
-            Card newCard = new Card(Integer.parseInt(line));
-            this.deck.add(newCard);
+        try {
+            File deckFile = new File(pathToFile);
+            BufferedReader bRead = new BufferedReader(new FileReader(deckFile));
+            while ((line = bRead.readLine()) != null) {
+                Card newCard = new Card(Integer.parseInt(line));
+                deck.add(newCard);
+            }
+            bRead.close();
+            if (deck.size() != (8 * amountOfPlayers)) throw new IOException();
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not find the main deck file, please try again.");
+        } catch (IOException e) {
+            System.out.printf("There are %d cards when there should be %d\n",
+                                deck.size(), (8 * amountOfPlayers));
         }
-        bRead.close();
     }
 
     public String toString() {
-        return (Arrays.toString(this.deck.toArray()));
+        return (Arrays.toString(deck.toArray()));
     }
 }

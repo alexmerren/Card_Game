@@ -1,10 +1,7 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.io.BufferedWriter;
 
 public class Player extends Thread {
@@ -20,16 +17,8 @@ public class Player extends Thread {
 		this.hand = new ArrayList<Card>();
 		this.playerNumber = playerNumber;
 		this.preferredNumber = playerNumber;
-		this.pathToFile = String.format(".%1$soutput%1$splayer%2$d.txt", File.separator, this.playerNumber);
-		createOutputFile(this.pathToFile);
-	}
-
-	Player(int playerNumber, int[] desiredHand) {
-		this.playerNumber = playerNumber;
-		this.hand = setHand(desiredHand);
-		this.preferredNumber = mostCommonValueInHand();
-		this.pathToFile = String.format(".%1$soutput%1$splayer%2$d.txt", File.separator, this.playerNumber);
-		createOutputFile(this.pathToFile);
+		this.pathToFile = String.format(".%1$soutput%1$splayer%2$d.txt", File.separator, playerNumber+1);
+		createOutputFile(pathToFile);
 	}
 
 	// Getters
@@ -56,42 +45,36 @@ public class Player extends Thread {
 	}
 
 	// Auxiliary Methods
+	public void addCard(Card card) {
+		int sizeOfHand = hand.size();
+		hand.add(sizeOfHand, card);
+	}
+
 	public boolean isPreferredCard(Card card) {
 		return (card.getValue() == preferredNumber);
 	}
 
 	// TODO
 	public ArrayList<Card> takeTurn(int drawDeck, int discardDeck) {
-		writeToFile(this.hand.toString());
-
+		writeToFile(hand.toString());
 		// Basically need to add the appropriate methods for doing this,
 		// See if I can make this work in it's current form.
-		return this.hand;
+		return hand;
 	}
 
 	public int mostCommonValueInHand() {
 		Map<Integer,Integer> map = new HashMap<Integer,Integer>();
-		int currentCardValue, previousValue, value;
 		int preferredNumber = playerNumber;
 		// Populate the map with the Cards in the player's hand as the keys,
 		// and the amount of those Cards as the values.
 		for (Card currentCard : hand) {
-			currentCardValue = currentCard.getValue();
-			if (!map.containsKey(currentCardValue)) {
-				map.put(currentCardValue, 0);
-			}
-			previousValue = map.get(currentCardValue);
-			map.remove(currentCardValue);
-			map.put(currentCardValue, ++previousValue);
-		}
-		// Go through the map to find the most common card.
-		for (int key : map.keySet()) {
-			value = map.get(key);
-			// If there is more than one with the same value it returns the
-			// biggest value.
-			if (value >= 2) {
-				preferredNumber = key;
-			}
+			int currentCardValue = currentCard.getValue();
+			if (!map.containsKey(currentCardValue)) map.put(currentCardValue, 0);
+			int previousValue = map.get(currentCardValue);
+			map.replace(currentCardValue, previousValue, ++previousValue);
+			// If the new amount of cards is above 50%, then it holds majority
+			// of the hand, making it the most preferred card.
+			if (previousValue >= (hand.size() / 2)) preferredNumber = currentCardValue;
 		}
 		return preferredNumber;
 	}
@@ -132,6 +115,7 @@ public class Player extends Thread {
 			outputFile.createNewFile();
 			BufferedWriter bWriteClearer = new BufferedWriter(new FileWriter(outputFile));
 			bWriteClearer.write("");
+			bWriteClearer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -147,6 +131,17 @@ public class Player extends Thread {
 		}
 	}
 
-	// TODO
-	//public boolean hasWon() { }
+	public boolean hasWon() {
+		Card leadCard = hand.get(0);
+		for (int i = 1; i < hand.size(); i++) {
+			Card currentCard = hand.get(i);
+			if (!currentCard.equals(leadCard)) return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return (Arrays.toString(hand.toArray()));
+	}
 }
