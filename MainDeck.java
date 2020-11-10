@@ -8,19 +8,16 @@ import java.util.Arrays;
 
 public class MainDeck {
 
-    // Attributes
     private int amountOfPlayers;
     private ArrayList<Card> deck;
     private String pathToFile;
 
-    // Constructors
     MainDeck(String locationOfDeck, int amountOfPlayers) {
         this.amountOfPlayers = amountOfPlayers;
         this.pathToFile = locationOfDeck;
-        importDeck();
+        this.deck = importDeck();
     }
 
-    // Getters
     public int getSize() {
         return deck.size();
     }
@@ -29,9 +26,11 @@ public class MainDeck {
         return deck;
     }
 
-    // Auxiliary Methods
-    public void importDeck() {
-        deck = new ArrayList<Card>();
+    /**
+     * This sets the deck attribute to the values found in a specified file.
+     */
+    public ArrayList<Card> importDeck() {
+        ArrayList<Card> deck = new ArrayList<Card>();
         String line;
         try {
             File deckFile = new File(pathToFile);
@@ -50,8 +49,14 @@ public class MainDeck {
                                 deck.size(), (8 * amountOfPlayers));
             System.exit(2);
         }
+        return deck;
     }
 
+    /**
+     * This returns the contents of the deck attribute.
+     *
+     * @return The content of the deck attribute.
+     */
     public String toString() {
         return (Arrays.toString(deck.toArray()));
     }

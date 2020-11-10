@@ -6,47 +6,45 @@ import java.io.BufferedWriter;
 
 public class Player extends Thread {
 
-	// Attributes
+	private String pathToFile;
 	private ArrayList<Card> hand;
 	private int playerNumber;
 	private int preferredNumber;
-	private String pathToFile;
 
-	// Constructors
 	Player(int playerNumber) {
 		this.hand = new ArrayList<Card>();
 		this.playerNumber = playerNumber+1;
-		this.preferredNumber = playerNumber+1;
+		this.preferredNumber = playerNumber;
 		this.pathToFile = String.format(".%1$soutput%1$splayer%2$d.txt", File.separator, playerNumber+1);
 		createOutputFile(pathToFile);
 	}
 
-
-	// Getters
 	public ArrayList<Card> getHand() { return hand; }
 
 	public int getPlayerNumber() { return playerNumber; }
 
-	public int getPreferredNumber() { return preferredNumber; }
-
-	// Setters
 	public void updatePreferredNumber() {
 		this.preferredNumber = mostCommonValueInHand();
 	}
 
-	// Auxiliary Methods
+	/**
+	 * This adds a card to the last value of the player's hand attribute.
+	 *
+	 * @param card  The card to be added to the hand attribute.
+	 */
 	public void addCard(Card card) {
 		int sizeOfHand = hand.size();
 		hand.add(sizeOfHand, card);
 	}
 
-	public boolean isPreferredCard(Card card) {
-		return (card.getValue() == preferredNumber);
-	}
-
+	/**
+	 * This goes through the hand attribute to find the most common value of
+	 * Card, and setting the player's preferred number to the most common value.
+	 *
+	 * @return The most common value in the player's hand attribute.
+	 */
 	public int mostCommonValueInHand() {
 		Map<Integer,Integer> map = new HashMap<Integer,Integer>();
-		int preferredNumber = playerNumber;
 		// Populate the map with the Cards in the player's hand as the keys,
 		// and the amount of those Cards as the values.
 		for (Card currentCard : hand) {
@@ -61,12 +59,26 @@ public class Player extends Thread {
 		return preferredNumber;
 	}
 
+	/**
+	 * This method takes a card from the top of the drawing deck, and adds it
+	 * to the hand attribute of the player.
+	 *
+	 * @param drawDeck  The deck that the player is drawing from
+	 * @return The Card that has been drawn from the drawing deck
+	 */
 	public Card drawCard(CardDeck drawDeck) {
 		Card drawnCard = drawDeck.moveTopCard();
 		hand.add(hand.size(), drawnCard);
 		return drawnCard;
 	}
 
+	/**
+	 * This method takes a card that is not the preferred value,
+	 * and discards it from the player's hand.
+	 *
+	 * @param discardDeck  The deck that the player discards to
+	 * @return The Card that has been discarded by the player
+	 */
 	public Card discardCard(CardDeck discardDeck) {
 		Card discardedCard = null;
 		for (int i = 0; i < hand.size(); i++) {
@@ -80,26 +92,13 @@ public class Player extends Thread {
 		return discardedCard;
 	}
 
-	public void takeTurn(CardDeck drawDeck, CardDeck discardDeck) {
-		// Output the current player's beginning hand.
-		System.out.printf("Player %d has the hand %s\n", playerNumber, hand);
-
-		// Get the current player to draw a card.
-		Card drawnCard = drawCard(drawDeck);
-		String drawString = String.format("Player %d has drawn a %d from deck %d", playerNumber, drawnCard.getValue(), drawDeck.getDeckNumber());
-		System.out.println(drawString);
-		writeToFile(drawString);
-
-		// Get the current player to discard a card.
-		Card discardedCard = discardCard(discardDeck);
-		String discardString = String.format("Player %d has discarded a %d to deck %d", playerNumber, discardedCard.getValue(), discardDeck.getDeckNumber());
-		System.out.println(discardString);
-		writeToFile(discardString);
-
-		// Output the current player's ending hand.
-		System.out.printf("Player %d has the hand %s\n", playerNumber, hand);
-	}
-
+	/**
+	 * This method creates an output file for a player in a specified location
+	 * This is the same as the 'createOutputFile' in 'CardDeck'
+	 * {@link CardDeck#createOutputFile(String)}
+	 *
+	 * @param pathToFile  The desired path for the output file of the deck
+	 */
 	public void createOutputFile(String pathToFile) {
 		try {
 			File outputFile = new File(pathToFile);
@@ -109,10 +108,16 @@ public class Player extends Thread {
 			bWriteClearer.write("");
 			bWriteClearer.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("There was an error creating an output file.");
 		}
 	}
 
+	/**
+	 * This writes a specified string to the output file created in
+	 * 'createOutputFile': {@link #createOutputFile(String)}.
+	 *
+	 * @param stringToWrite  The string to be written to the output file
+	 */
 	public void writeToFile(String stringToWrite) {
 		try {
 			BufferedWriter bWrite = new BufferedWriter(new FileWriter(pathToFile, true));
@@ -123,6 +128,12 @@ public class Player extends Thread {
 		}
 	}
 
+	/**
+	 * This method checks if all the cards in a player's hand are the same,
+	 * meaning that they have won the game.
+	 *
+	 * @return if the Cards are all the same, true. False if not.
+	 */
 	public boolean hasWon() {
 		Card leadCard = hand.get(0);
 		for (int i = 1; i < hand.size(); i++) {
@@ -132,7 +143,11 @@ public class Player extends Thread {
 		return true;
 	}
 
-	@Override
+	/**
+	 * This returns the contents of the hand attribute in a string form.
+	 *
+	 * @return  The contents of the hand attribute.
+	 */
 	public String toString() {
 		return (Arrays.toString(hand.toArray()));
 	}
