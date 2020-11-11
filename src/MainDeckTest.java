@@ -10,14 +10,14 @@ import java.util.ArrayList;
 
 public class MainDeckTest {
 
-    static int amountOfPlayers;
-    static String pathToFile;
-    static MainDeck deck;
+    int amountOfPlayers;
+    String pathToFile;
+    MainDeck deck;
 
     @Before
     public void setUp() {
         amountOfPlayers = 2;
-        pathToFile = "./data/2.txt";
+        pathToFile = "../data/2.txt";
         deck = new MainDeck(pathToFile, amountOfPlayers);
     }
 

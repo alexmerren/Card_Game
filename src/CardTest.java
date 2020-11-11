@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 
 public class CardTest {
 
-    static int desiredValue;
-    static Card card;
+    int desiredValue;
+    Card card;
 
     @Before
     public void setUp() {

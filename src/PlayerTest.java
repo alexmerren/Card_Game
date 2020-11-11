@@ -9,8 +9,8 @@ import java.util.Arrays;
 
 public class PlayerTest {
 
-    static Player player;
-    static int playerNumber;
+    Player player;
+    int playerNumber;
 
     @Before
     public void setUp() {

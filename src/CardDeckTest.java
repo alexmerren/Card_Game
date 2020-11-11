@@ -9,10 +9,10 @@ import java.util.Arrays;
 
 public class CardDeckTest {
 
-    static CardDeck deck;
-    static int cardDeckNumber;
-    static ArrayList<Card> alternateDeck;
-    static String pathToFile;
+    CardDeck deck;
+    int cardDeckNumber;
+    ArrayList<Card> alternateDeck;
+    String pathToFile;
 
     @Before
     public  void setUp() {
@@ -72,5 +72,4 @@ public class CardDeckTest {
         String toString = Arrays.toString(deck.getDeck().toArray());
         assertEquals(toString, deck.toString());
     }
-
 }
