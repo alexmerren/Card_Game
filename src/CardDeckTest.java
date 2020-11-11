@@ -1,11 +1,11 @@
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class CardDeckTest {
 
@@ -14,8 +14,8 @@ public class CardDeckTest {
     static ArrayList<Card> alternateDeck;
     static String pathToFile;
 
-    @BeforeAll
-    public static void setUp() {
+    @Before
+    public  void setUp() {
         cardDeckNumber = 12;
         deck = new CardDeck(cardDeckNumber);
         alternateDeck = new ArrayList<Card>();

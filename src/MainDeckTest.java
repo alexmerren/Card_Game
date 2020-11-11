@@ -1,13 +1,12 @@
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class MainDeckTest {
 
@@ -15,8 +14,8 @@ public class MainDeckTest {
     static String pathToFile;
     static MainDeck deck;
 
-    @BeforeAll
-    public static void setUp() {
+    @Before
+    public void setUp() {
         amountOfPlayers = 2;
         pathToFile = "./data/2.txt";
         deck = new MainDeck(pathToFile, amountOfPlayers);

@@ -1,7 +1,7 @@
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 public class CardGameTest {
 
@@ -9,8 +9,8 @@ public class CardGameTest {
     static CardDeck drawDeck;
     static CardDeck discardDeck;
 
-    @BeforeAll
-    public static void setUp() {
+    @Before
+    public void setUp() {
         testPlayer = new Player(1);
         drawDeck = new CardDeck(1);
         discardDeck = new CardDeck(2);

@@ -1,15 +1,15 @@
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 public class CardTest {
 
     static int desiredValue;
     static Card card;
 
-    @BeforeAll
-    public static void setUp() {
+    @Before
+    public void setUp() {
         desiredValue = 12;
         card = new Card(desiredValue);
     }

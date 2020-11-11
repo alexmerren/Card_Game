@@ -1,18 +1,19 @@
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerTest {
 
     static Player player;
     static int playerNumber;
 
-    @BeforeAll
-    public static void setUp() {
+    @Before
+    public void setUp() {
         playerNumber = 12;
         player = new Player(playerNumber);
     }
