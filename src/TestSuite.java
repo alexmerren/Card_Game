@@ -1,7 +1,15 @@
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-import static org.junit.Assert.*;
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+        MainDeckTest.class,
+        PlayerTest.class,
+        CardTest.class,
+        CardDeckTest.class,
+        CardGameTest.class
+})
 
 public class TestSuite {
+
 }
