@@ -35,7 +35,7 @@ You will then be prompted to enter:
 * The amount of players
 * The location of the Pack to use for the game.
 
-For testing, I have included a file called "10.txt", in the _data_ folder.
+For testing, I have included a file called "10.txt".
 In the same vein, you must input 10 for the amount of players in the game.
 
 If you enter the correct information, the game will run!
