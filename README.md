@@ -1,8 +1,6 @@
 # Card Game Assignment
 This is a Card Game application created for the ECM2414 Pair Programming Assignment
 
-This is a solution created by __014415__ and __009894__.
-
 ## How to compile the game
 In order to compile the game from the source code:
 ```
