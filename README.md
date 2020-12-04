@@ -33,6 +33,8 @@ If compiling in Windows Command Line, replace the `;` with `:`.
 
 ## Usage
 
+### Production
+
 In order to run the game:
 
 ```bash
@@ -44,7 +46,7 @@ For running the game, I have included a test pack called __10.txt__.
 
 When prompted, type in __10__ for the amount of players, and __10.txt__ as the pack of cards.
 
-## How to run the tests
+### Tests
 
 In order to run the tests:
 
@@ -52,8 +54,8 @@ In order to run the tests:
 $ cd out
 $ java -cp ".;../lib/*" org.junit.runner.JUnitCore TestSuite
 ```
-Similarly with the main game, to run in windows, replace `;` with `:`.
 
+Similarly with the main game, to run in windows, replace `;` with `:`.
 
 ## Output 
 
