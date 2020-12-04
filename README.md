@@ -1,61 +1,62 @@
-# Card Game Assignment
-This is a Card Game application created for the ECM2414 Pair Programming Assignment
+# Card Game 
+This is a card game application created for the ECM2414 pair programming assignment
 
-## How to compile the game
+## Contents
+
+ - [Compiling](#Compiling) 
+ - [Usage](#Usage)
+ - [Output](#Output)
+
+## Compiling
+
+### Production 
+
 In order to compile the game from the source code:
-```
-    cd src
-    javac {Card.java,CardDeck.java,MainDeck.java,Player.java,CardGame.java} -d ../out
-```
-This will put all the bytecode (.class) files in a folder called _out_.
 
-## How to compile the tests
-### Windows
+```bash
+$ cd src
+$ javac {Card.java,CardDeck.java,MainDeck.java,Player.java,CardGame.java} -d ../out
+```
+
+This will put all the bytecode files in the __out__ directory.
+
+### Tests 
+
 In order to compile the tests from the source code:
-```
-    cd src
-    javac -cp ".;../lib/*" {CardTest.java,CardDeckTest.java,MainDeckTest.java,PlayerTest.java,CardGameTest.java} -d ../out
-```
-### MacOS
-In order to compile the tests from the source code:
-```
-    cd src
-    javac -cp ".:../lib/*" {CardTest.java,CardDeckTest.java,MainDeckTest.java,PlayerTest.java,CardGameTest.java} -d ../out
+
+```bash
+$ cd src
+$ javac -cp ".;../lib/*" {CardTest.java,CardDeckTest.java,MainDeckTest.java,PlayerTest.java,CardGameTest.java} -d ../out
 ```
 
-## How to run the game
-Download the bytecode (.class files) and type:
-```
-    cd out
-    java CardGame
-```
-You will then be prompted to enter:
-* The amount of players
-* The location of the Pack to use for the game.
+If compiling in Windows Command Line, replace the `;` with `:`.
 
-For testing, I have included a file called "10.txt".
-In the same vein, you must input 10 for the amount of players in the game.
+## Usage
 
-If you enter the correct information, the game will run!
+In order to run the game:
+
+```bash
+$ cd out
+$ java CardGame
+```
+
+For running the game, I have included a test pack called __10.txt__.
+
+When prompted, type in __10__ for the amount of players, and __10.txt__ as the pack of cards.
 
 ## How to run the tests
-### Windows
-To run the tests, you must type:
-```
-    cd out
-    java -cp ".;../lib/*" org.junit.runner.JUnitCore TestSuite
-```
 
-### MacOS
-To run the tests, you must type:
-```
-    cd out
-    java -cp ".:../lib/*" org.junit.runner.JUnitCore TestSuite
-```
+In order to run the tests:
 
-## How to view the output files
-After running the game, the _CardGame_ class will create a directory called
-_output_.
+```bash
+$ cd out
+$ java -cp ".;../lib/*" org.junit.runner.JUnitCore TestSuite
+```
+Similarly with the main game, to run in windows, replace `;` with `:`.
 
-This will contain all the moves made by all the players,
-and the starting contents and ending contents of the decks.
+
+## Output 
+
+After running the game, the __CardGame__ class will create a directory called __output__.
+
+This will contain all the moves made by all the players, and the starting contents and ending contents of the decks.
