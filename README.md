@@ -1,5 +1,5 @@
 # Card Game 
-This is a card game application created for the ECM2414 pair programming assignment
+This is a card game application created for the __ECM2414 pair programming assignment__. This assignment recieved an 83/100.
 
 ## Contents
 
