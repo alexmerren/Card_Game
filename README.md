@@ -3,11 +3,11 @@ This is a card game application created for the __ECM2414 pair programming assig
 
 ## Contents
 
- - [Compiling](#Compiling) 
- - [Usage](#Usage)
+ - [Compilation](#Compiling) 
+ - [Functionality](#Usage)
  - [Output](#Output)
 
-## Compiling
+## Compilation
 
 ### Production 
 
@@ -26,12 +26,12 @@ In order to compile the tests from the source code:
 
 ```bash
 $ cd src
-$ javac -cp ".;../lib/*" {CardTest.java,CardDeckTest.java,MainDeckTest.java,PlayerTest.java,CardGameTest.java} -d ../out
+$ javac -cp ".:../lib/*" {CardTest.java,CardDeckTest.java,MainDeckTest.java,PlayerTest.java,CardGameTest.java} -d ../out
 ```
 
-If compiling in Windows Command Line, replace the `;` with `:`.
+If compiling in Windows Command Line, replace the `:` with `;`.
 
-## Usage
+## Functionality
 
 ### Production
 
@@ -52,10 +52,10 @@ In order to run the tests:
 
 ```bash
 $ cd out
-$ java -cp ".;../lib/*" org.junit.runner.JUnitCore TestSuite
+$ java -cp ".:../lib/*" org.junit.runner.JUnitCore TestSuite
 ```
 
-Similarly with the main game, to run in windows, replace `;` with `:`.
+Similarly with the production code, to run in windows, replace `:` with `;`.
 
 ## Output 
 
