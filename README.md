@@ -59,6 +59,6 @@ Similarly with the main game, to run in windows, replace `;` with `:`.
 
 ## Output 
 
-After running the game, the __CardGame__ class will create a directory called __output__.
+After running the game, the game will create a directory called __output__.
 
-This will contain all the moves made by all the players, and the starting contents and ending contents of the decks.
+The output directory will contain all the moves made by all players, and the contents of all of the decks throughout the game.
