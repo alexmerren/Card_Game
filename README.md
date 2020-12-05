@@ -44,7 +44,7 @@ $ java CardGame
 
 For running the game, I have included a test pack called __10.txt__.
 
-When prompted, type in __10__ for the amount of players, and __10.txt__ as the pack of cards.
+When prompted, type in __10__ for the amount of players, and __../data/10.txt__ as the pack of cards.
 
 ### Tests
 
