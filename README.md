@@ -3,8 +3,8 @@ This is a card game application created for the ECM2414 pair programming assignm
 
 ## Contents
 
- - [Compilation](#Compiling) 
- - [Functionality](#Usage)
+ - [Compilation](#Compilation) 
+ - [Functionality](#Functionality)
  - [Output](#Output)
 
 ## Compilation
