@@ -16,8 +16,8 @@ public class MainDeckTest {
 
     @Before
     public void setUp() {
-        amountOfPlayers = 2;
-        pathToFile = "../data/2.txt";
+        amountOfPlayers = 10;
+        pathToFile = "../data/10.txt";
         deck = new MainDeck(pathToFile, amountOfPlayers);
     }
 
